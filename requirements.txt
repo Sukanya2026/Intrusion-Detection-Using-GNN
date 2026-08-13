@@ -1,0 +1,7 @@
+Django>=4.2
+torch
+torch-geometric
+numpy
+pandas
+networkx
+scikit-learn
