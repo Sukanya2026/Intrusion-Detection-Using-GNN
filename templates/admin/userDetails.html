@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Intrusion Detection</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #f0f4f8;
+      color: #222;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Enhanced Navbar with Animation */
+    .navbar {
+      background: linear-gradient(135deg, #6a1b9a, #26a69a);
+      padding: 1.8rem 3rem;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      transition: all 0.4s ease;
+      min-height: 80px;
+    }
+
+    .navbar.scrolled {
+      background: linear-gradient(135deg, #8e24aa, #4db6ac);
+      transform: scale(1.01);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      color: #fff;
+      font-size: 2rem;
+      font-weight: bold;
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 5px #fff, 0 0 10px #26a69a; }
+      100% { text-shadow: 0 0 10px #fff, 0 0 20px #26a69a; }
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      color: #fff;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      top: 0;
+      left: -100%;
+      transition: all 0.4s ease;
+    }
+
+    .nav-btn:hover::after {
+      left: 0;
+    }
+
+    .nav-btn:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .active {
+      background-color: #26a69a;
+      color: #fff !important;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(38, 166, 154, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(38, 166, 154, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(38, 166, 154, 0); }
+    }
+
+    .menu-toggle {
+      display: none;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        border-top: 1px solid #ccc;
+      }
+
+      .nav-menu.active {
+        display: flex;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from { transform: translateY(-20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    }
+
+    /* Main Content with Animation */
+    .main-content {
+      margin-top: 120px;
+      padding: 60px 20px;
+      text-align: center;
+      background-color: #ffffff;
+      border-radius: 12px;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      color: #6a1b9a;
+      font-family: 'Orbitron', sans-serif;
+      animation: textGlow 3s infinite alternate;
+    }
+
+    @keyframes textGlow {
+      0% { text-shadow: 0 0 5px #6a1b9a; }
+      100% { text-shadow: 0 0 15px #26a69a; }
+    }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 1.8rem;
+      color: #2c3e50;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 3px;
+      background: #26a69a;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: expand 2s infinite;
+    }
+
+    @keyframes expand {
+      0% { width: 50px; }
+      50% { width: 100px; }
+      100% { width: 50px; }
+    }
+
+    p, li {
+      margin-top: 10px;
+      font-size: 1.15rem;
+      color: #333;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li::before {
+      content: "✓";
+      color: #26a69a;
+      margin-right: 8px;
+      animation: checkPulse 1.5s infinite;
+    }
+
+    @keyframes checkPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    footer {
+      background-color: #e0f2f1;
+      color: #333;
+      padding: 30px 20px;
+      text-align: center;
+      animation: fadeInFooter 1s ease-in;
+    }
+
+    @keyframes fadeInFooter {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .footer-bottom {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background-color: #f0f4f8;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    /* Animated Graph Overlay */
+    .graph-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.1;
+    }
+
+    .graph-node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #26a69a;
+      border-radius: 50%;
+      animation: nodePulse 2s infinite;
+    }
+
+    @keyframes nodePulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.5); opacity: 0.4; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="particles-js"></div>
+<div class="graph-overlay" id="graphOverlay"></div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a class="nav-logo">Intrusion Detection</a>
+    <div class="menu-toggle" id="mobileMenu">☰</div>
+    <div class="nav-menu" id="navMenu">
+      <a href="adminHome" class="nav-btn">Home</a>
+      <a href="user_details" class="nav-btn">User Details</a>
+      <a href="log" class="nav-btn">Logout</a>
+    </div>
+  </div>
+</nav>
+
+<div class="main-content">
+    <div>
+    <h1>Welcome to the Admin Dashboard</h1>
+    <p>Manage users, monitor system activity, and oversee intrusion detection operations.</p>
+  
+    <section>
+      <h2>👥 User Management</h2>
+      <table style="width: 100%; max-width: 1000px; margin: 20px auto; border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #f2f2f2;">
+            <th style="padding: 10px; border: 1px solid #ddd;">ID</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">LoginID</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Name</th>
+
+            <th style="padding: 10px; border: 1px solid #ddd;">Email</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Status</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.id }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.loginId }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.name }}</td>
+            
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.email }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ user.status }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+              {% if user.status == 'Active' %}
+                <a href='deactivate_user?id={{user.id}}' class="btn" style="color: red;">Deactivate</a>
+              {% else %}
+                <a href="activate_user?id={{user.id}}" class="btn" style="color: green;">Activate</a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+ 
+    </div>
+    <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+    <div>
+
+  <section>
+    <h2>⚙️ Admin Functions</h2>
+    <ul style="text-align: left; max-width: 1000px; margin: 20px auto;">
+      <li><strong>User Management:</strong> Add, edit, or remove user accounts.</li>
+      <li><strong>Activity Logs:</strong> Review system logs and flagged intrusions.</li>
+      <li><strong>Settings:</strong> Adjust GNN model parameters and thresholds.</li>
+      <li><strong>Reports:</strong> Generate detailed security reports.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>🔒 Security Features</h2>
+    <ul style="text-align: left; max-width: 1000px; margin: 20px auto;">
+      <li>Real-time monitoring of network traffic.</li>
+      <li>Automated alerts for detected anomalies.</li>
+      <li>Role-based access control for admin privileges.</li>
+      <li>Secure logout to protect sensitive data.</li>
+    </ul>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    © 2025 GNN Intrusion Detection | By Data_Point (pvt) Ltd
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navMenu = document.getElementById('navMenu');
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.querySelectorAll('.nav-btn');
+    const currentPath = window.location.pathname;
+    const graphOverlay = document.getElementById('graphOverlay');
+
+    // Mobile Menu Toggle
+    mobileMenu.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+
+    // Active Link Highlight
+    navLinks.forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      }
+    });
+
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Particles.js Configuration with Larger Black Particles
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 50 },
+        color: { value: "#000000" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 10, random: true },
+        line_linked: {
+          enable: true,
+          distance: 120,
+          color: "#000000",
+          opacity: 0.6,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: "none",
+          out_mode: "bounce"
+        }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: {
+          onhover: { enable: true, mode: "grab" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          grab: { distance: 200, line_linked: { opacity: 0.5 } },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Dynamic Graph Overlay Animation
+    function createGraphNodes() {
+      const nodeCount = 5;
+      for (let i = 0; i < nodeCount; i++) {
+        const node = document.createElement('div');
+        node.classList.add('graph-node');
+        const angle = (i / nodeCount) * 2 * Math.PI;
+        const radius = 100 + Math.random() * 50;
+        node.style.left = `${150 + Math.cos(angle) * radius}px`;
+        node.style.top = `${150 + Math.sin(angle) * radius}px`;
+        node.style.animationDelay = `${i * 0.3}s`;
+        graphOverlay.appendChild(node);
+      }
+    }
+
+    createGraphNodes();
+
+    // Simulate Intrusion Detection Alert
+    setInterval(() => {
+      const randomNode = document.querySelector('.graph-node:nth-child(' + Math.floor(Math.random() * 5 + 1) + ')');
+      if (randomNode) {
+        randomNode.style.background = '#ff1744'; // Red for anomaly
+        setTimeout(() => {
+          randomNode.style.background = '#26a69a'; // Back to teal
+        }, 1000);
+      }
+    }, 5000);
+  });
+</script>
+
+</body>
+</html>
