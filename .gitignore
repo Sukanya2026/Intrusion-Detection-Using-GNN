@@ -1,0 +1,85 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+nose2-junit-report.xml
+coverage.xml
+htmlcov/
+
+# mypy
+.mypy_cache/
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff:
+db.sqlite3
+/media/
+/staticfiles/
+*.log
+
+# Sensitive settings
+.env
+env.*
+
+# Machine and editor files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Model binaries and large artifacts
+*.pth
+*.pt
+GAT_model.pth
+GCN_model.pth
+GIN_model.pth
+GraphSAGE_model.pth
+
+# macOS
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Node
+node_modules/
+db.sqlite3
