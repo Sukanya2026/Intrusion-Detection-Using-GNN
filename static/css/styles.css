@@ -1,0 +1,8 @@
+/* Minimal stylesheet to avoid 404 and provide base styles */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8fafc; color: #222; }
+.navbar { padding: 1rem 2rem; background: linear-gradient(135deg,#8cee01,#0085f1); }
+.btn { color:#fff;padding:0.5rem 1rem;border-radius:6px;border:none;cursor:pointer }
+.container { max-width: 1100px; margin: 0 auto; padding: 1rem }
+
+/* basic responsive */
+@media (max-width:768px){ .navbar{padding:0.8rem 1rem} }

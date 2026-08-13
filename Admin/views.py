@@ -1,28 +1,31 @@
 from django.shortcuts import render
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib import messages
 
 from Detector.models import Detector
 
-# Create your views here.
 
 def adminHome(request):
     if not request.session.get('admin'):
-        return render(request,'adminLogin.html')    
-    return render(request,'admin/adminHome.html')
+        return render(request, 'adminLogin.html')
+    return render(request, 'admin/adminHome.html')
 
 
 def admin_Login(request):
-    if request.method=="POST":
-        loginid=request.POST['loginId']
-        password=request.POST['password']
+    if request.method == "POST":
+        loginid = request.POST.get('loginId')
+        password = request.POST.get('password')
 
-        if loginid=="admin" and password=='admin':
-            request.session['admin']=True
-            return render(request,'admin/adminHome.html')
+        user = authenticate(request, username=loginid, password=password)
+        if user is not None and user.is_superuser:
+            # mark session and log the user in
+            request.session['admin'] = True
+            auth_login(request, user)
+            return render(request, 'admin/adminHome.html')
         else:
-            messages.error(request,'Invalid details')
-            return render(request,'adminLogin.html')
-    else:
-        return render(request,'adminLogin.html')
+            messages.error(request, 'Invalid details')
+            return render(request, 'adminLogin.html')
+    return render(request, 'adminLogin.html')
 
 def user_details(request):
     if not request.session.get('admin'):
