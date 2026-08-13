@@ -83,3 +83,4 @@ ehthumbs.db
 # Node
 node_modules/
 db.sqlite3
+Dynamic_Graph_Based_Network_Intrusion/settings.py
